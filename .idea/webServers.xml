@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="5a4fc1b5-6284-42c1-856c-3cb0d66138af" name="Fornex" url="http://hostde10.fornex.org">
+        <fileTransfer host="hostde10.fornex.org" port="21" rootFolder="/www">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="02e2f2e8-900a-475f-a7d1-fcc574e0f752" name="shop.mydevelop.in.net" url="http://hostde10.fornex.org">
+        <fileTransfer host="hostde10.fornex.org" port="20022" rootFolder="/www" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="20022" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="4bbe918d-93c7-4bc5-a28c-66d9836deba0" name="anna-trainer.co.uk" url="http://anna-trainer.co.uk">
+        <fileTransfer host="anna-trainer.co.uk" port="21">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" passiveMode="true" shareSSLContext="true" showHiddenFiles="true" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
