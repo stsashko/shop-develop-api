@@ -171,7 +171,7 @@ class PurchasesController extends Controller
                 'customer_id' => (int)$request->customer_id,
                 'store_id' => (int)$request->store_id,
                 'purchase_date' => $request->input('purchase_date'),
-                'created_at' => date("Y-m-d H:i:s"),
+//                'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ];
 

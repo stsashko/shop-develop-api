@@ -171,7 +171,7 @@ class DeliveriesController extends Controller
                 'store_id' => (int)$request->store_id,
                 'delivery_date' => $request->input('delivery_date'),
                 'product_count' => (int)$request->product_count,
-                'created_at' => date("Y-m-d H:i:s"),
+//                'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s")
             ];
 

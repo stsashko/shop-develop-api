@@ -41,6 +41,8 @@ class ProfileController extends Controller
 
             $user->name = $request->input('name');
             $user->email = $request->input('email');
+            $user->updated_at = date("Y-m-d H:i:s");
+
             if($request->input('password'))
                 $user->password = Hash::make($request->input('password'));
 

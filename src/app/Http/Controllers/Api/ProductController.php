@@ -179,7 +179,8 @@ class ProductController extends Controller
                 'product_name' => $request->product_name,
                 'price' => $request->price,
                 'category_id' => $request->category_id,
-                'manufacturer_id' => $request->manufacturer_id
+                'manufacturer_id' => $request->manufacturer_id,
+                'updated_at' => date("Y-m-d H:i:s")
             ];
 
             if($request->hasFile('image') && $request->file()) {
