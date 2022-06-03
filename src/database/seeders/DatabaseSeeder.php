@@ -23,14 +23,14 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         Categories::factory(15)->create();
-        Manufacturers::factory(15)->create();
-        Products::factory(1000)->create();
-        Stores::factory(10)->create();
-        Deliveries::factory(300)->create();
-        Customers::factory(50)->create();
-        Purchases::factory(250)->create();
-        Purchase_items::factory(400)->create();
-        User::factory(15)->create();
+        Manufacturers::factory(20)->create();
+        Products::factory(1500)->create();
+        Stores::factory(15)->create();
+        Deliveries::factory(400)->create();
+        Customers::factory( 100)->create();
+        Purchases::factory(350)->create();
+        Purchase_items::factory(600)->create();
+        User::factory(30)->create();
 //        dd($categories);
 //         \App\Models\User::factory(10)->create();
     }
