@@ -3,3 +3,4 @@
 /frontend
 .env
 .env.backup
+/services/*/mysql/*
