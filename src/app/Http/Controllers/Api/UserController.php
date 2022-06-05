@@ -8,13 +8,14 @@ use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
-    public function index($page = null, $limit = 30)
+    public function index(Request $request, $page = null)
     {
         if(!$page)
             return response()->json([
@@ -22,14 +23,27 @@ class UserController extends Controller
                 'data' => UserResource::collection(User::all())
             ], 200);
         else {
+            $limit = (int)$request->input('rowsPerPage');
             $limit = !in_array($limit, [30, 50, 100]) ? 30 : $limit;
 
             Paginator::currentPageResolver(function () use ($page) {
                 return $page;
             });
 
-            $users = User::select('id', 'name', 'email', 'avatar', 'role', 'created_at', 'updated_at');
+            $users = User::select('id', 'name', 'email', 'avatar', 'role', DB::raw('IF(role, "administrator", "editor") as `role_name`'), 'created_at', 'updated_at');
 
+            if ($request->input('search')) {
+                $search = $request->input('search');
+                $users->Where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%");
+                    $query->orWhere('email', 'LIKE', "%{$search}%");
+                });
+            }
+
+            if ((string) $request->input('role') !== '')
+                $users->where('role', '=', (int)$request->input('role'));
+
+            $users->orderByRaw('created_at DESC');
             return response()->json([
                 'success' => true,
                 'data' => $users->paginate($limit)
@@ -40,10 +54,12 @@ class UserController extends Controller
     public function show($id)
     {
         try {
+            $users = User::select('id', 'name', 'email', 'avatar', 'role', DB::raw('IF(role, "administrator", "editor") as `role_name`'), 'created_at', 'updated_at');
             return response()->json([
                 'success' => true,
-                'data' => new UserAdminResource(User::findOrFail($id))
+                'data' => new UserAdminResource($users->findOrFail($id))
             ], 200);
+
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
             return response([
                 'success' => false,
@@ -77,23 +93,22 @@ class UserController extends Controller
                 'updated_at' => date("Y-m-d H:i:s"),
                 'api_token' => Str::random(80),
                 'remember_token' => Str::random(10),
+                'password' => $request->input('password') ? Hash::make($request->input('password')) : Hash::make(Str::random(10))
             ];
 
-            if ($request->input('password'))
-                $create['password'] = Hash::make($request->input('password'));
-
             if($request->hasFile('avatar') && $request->file()) {
-                $fileName = Str::random(15) . '.' . $request->image->extension();
-                $request->image->move(public_path('avatars'), $fileName);
+                $fileName = Str::random(15) . '.' . $request->avatar->extension();
+                $request->avatar->move(public_path('avatars'), $fileName);
                 $filePath = url('avatars/' . $fileName);
                 $create['avatar'] = $filePath;
             }
 
             $id = User::insertGetId($create);
+            $user = User::select('users.*', DB::raw('IF(users.role, "administrator", "editor") as `role_name`'));
 
             return response()->json([
                 'success' => true,
-                'data' => new UserAdminResource(User::findOrFail((int)$id))
+                'data' => new UserAdminResource($user->findOrFail((int)$id))
             ], 201);
         }
     }
@@ -133,8 +148,8 @@ class UserController extends Controller
                 $update['password'] = Hash::make($request->input('password'));
 
             if($request->hasFile('avatar') && $request->file()) {
-                $fileName = Str::random(15) . '.' . $request->image->extension();
-                $request->image->move(public_path('avatars'), $fileName);
+                $fileName = Str::random(15) . '.' . $request->avatar->extension();
+                $request->avatar->move(public_path('avatars'), $fileName);
                 $filePath = url('avatars/' . $fileName);
                 $update['avatar'] = $filePath;
             }
@@ -142,9 +157,11 @@ class UserController extends Controller
             $user = User::findOrFail((int)$id);
             $user->update($update);
 
+            $user = User::select('users.*', DB::raw('IF(users.role, "administrator", "editor") as `role_name`'));
+
             return response()->json([
                 'success' => true,
-                'data' => new UserAdminResource(User::findOrFail((int)$id))
+                'data' => new UserAdminResource($user->findOrFail((int)$id))
             ], 201);
         }
     }
@@ -155,7 +172,7 @@ class UserController extends Controller
             return response()->json([
                 'success' => false,
                 'errors' => ['Id not found']
-            ], 400);
+            ], 201);
         }
 
         $user = User::findOrFail((int) $id);
@@ -163,7 +180,7 @@ class UserController extends Controller
 
         return response()->json([
             'success' => true,
-        ], 204);
+        ], 201);
     }
 
 }

@@ -91,7 +91,7 @@ Route::middleware(['auth:sanctum'])->group(function (){
 
 
     Route::middleware(['admin'])->group(function (){
-        Route::get('/users/{page?}/{limit?}', [UserController::class, 'index']);
+        Route::get('/users/{page?}', [UserController::class, 'index']);
         Route::get('/user/{id}', [UserController::class, 'show']);
         Route::post('/user', [UserController::class, 'store']);
         Route::post('/user/{id}', [UserController::class, 'update']);

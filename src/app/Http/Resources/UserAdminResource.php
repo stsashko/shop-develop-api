@@ -20,6 +20,7 @@ class UserAdminResource extends JsonResource
             'email' => $this->email,
             'avatar' => $this->avatar,
             'role' => $this->role,
+            'role_name' => $this->role_name,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
