@@ -10,7 +10,7 @@ Used technologies:
 ## ***The result of the work***
 [https://shop.mydevelop.in.net/](https://shop.mydevelop.in.net/)
 
-login: admin@gmail.com
+login: user@gmail.com
 
 password: 111111
 
