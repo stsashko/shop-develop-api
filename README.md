@@ -1,4 +1,4 @@
-# Internet store admin panel (REST API, back-end)
+# Online store admin panel (REST API, back-end)
 
 Used technologies:
 * PHP
@@ -8,7 +8,7 @@ Used technologies:
 *The project was built in docker and deployed to the VPS*
 
 ## ***The result of the work***
-[https://shop.mydevelop.in.net/](https://shop.mydevelop.in.net/)
+[https://shop.myspirit.site/](https://shop.myspirit.site/)
 
 login: user@gmail.com
 
